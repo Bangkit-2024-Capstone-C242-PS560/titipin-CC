@@ -1,5 +1,5 @@
 node_modules
 npm-debug.log
-servicesccountkey.json
+ServiceAccountkey.json
 .DS_Store
 .env
