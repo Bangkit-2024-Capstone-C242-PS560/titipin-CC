@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  carts     Cart[]
+  events    Event[]
+  reviews   Review[]
+}
+
+model Event {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  imageUrl    String? // URL untuk gambar
+  createdBy   Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  products    Product[] // Relasi ke Product
+  category    String // Tambahkan kategori di sini
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  category    String
+  description String
+  price       Float
+  imageUrl    String
+  eventId     Int
+  event       Event    @relation(fields: [eventId], references: [id]) // Relasi ke Event
+  quantity    Int
+  createdAt   DateTime @default(now())
+  carts       Cart[]
+  reviews     Review[]
+}
+
+model Cart {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  quantity  Int
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+}
