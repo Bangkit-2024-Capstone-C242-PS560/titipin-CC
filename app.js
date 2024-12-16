@@ -10,7 +10,7 @@ const userRoutes = require('./src/routes/userRoutes');
 const mainpageRoutes = require('./src/routes/mainpageRoutes')
 
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 8080;
 
 app.use(bodyParser.json());
 app.use(express.json());
